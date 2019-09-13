@@ -17,6 +17,7 @@
 		6E7910B7232BCF8000A60CE2 /* FinanceTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7910B6232BCF8000A60CE2 /* FinanceTrackerTests.swift */; };
 		6E7910C2232BCF8000A60CE2 /* FinanceTrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7910C1232BCF8000A60CE2 /* FinanceTrackerUITests.swift */; };
 		6E7910D0232BD1D500A60CE2 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7910CF232BD1D500A60CE2 /* MenuView.swift */; };
+		6ED1F9A8232BF36200412DB3 /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED1F9A7232BF36200412DB3 /* AccountsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		6E7910C1232BCF8000A60CE2 /* FinanceTrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceTrackerUITests.swift; sourceTree = "<group>"; };
 		6E7910C3232BCF8000A60CE2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E7910CF232BD1D500A60CE2 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		6ED1F9A7232BF36200412DB3 /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				6E7910A0232BCF7F00A60CE2 /* FinanceTracker.xcdatamodeld */,
 				6E7910A7232BCF8000A60CE2 /* Preview Content */,
 				6E7910CF232BD1D500A60CE2 /* MenuView.swift */,
+				6ED1F9A7232BF36200412DB3 /* AccountsView.swift */,
 			);
 			path = FinanceTracker;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 			files = (
 				6E7910D0232BD1D500A60CE2 /* MenuView.swift in Sources */,
 				6E7910A2232BCF7F00A60CE2 /* FinanceTracker.xcdatamodeld in Sources */,
+				6ED1F9A8232BF36200412DB3 /* AccountsView.swift in Sources */,
 				6E79109D232BCF7F00A60CE2 /* AppDelegate.swift in Sources */,
 				6E7910A4232BCF7F00A60CE2 /* ContentView.swift in Sources */,
 				6E79109F232BCF7F00A60CE2 /* SceneDelegate.swift in Sources */,

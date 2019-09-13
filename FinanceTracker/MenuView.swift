@@ -8,14 +8,25 @@
 
 import SwiftUI
 
-struct GroupItem<Group: Hashable, Item: Hashable>: Identifiable, Hashable {
+struct GroupItem<Group: Hashable, Item: Hashable, NavigationView: View>: Identifiable, Hashable {
+    static func == (lhs: GroupItem<Group, Item, NavigationView>, rhs: GroupItem<Group, Item, NavigationView>) -> Bool {
+        return lhs.header == rhs.header && lhs.id == rhs.id && lhs.items == rhs.items
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(header)
+        hasher.combine(id)
+        hasher.combine(items)
+    }
+    
     var id: Group {
         return header
     }
     
-    var isExpanded: Bool = false
     var header: Group
     var items: [Item]
+    var navigationView: AnyView
+    var isExpanded: Bool = false
 }
 
 struct HeaderView: View {
@@ -40,28 +51,37 @@ struct HeaderView: View {
 }
 
 struct MenuView: View {
-    @State var items = [
-        GroupItem(header: "First", items: ["1", "2", "3"]),
-        GroupItem(header: "Second", items: ["1", "2", "3"]),
-        GroupItem(header: "Third", items: ["1", "2", "3"])
+    @State var items: [GroupItem<String, String, AnyView>] = [
+        GroupItem(header: "First", items: ["Accounts", "2", "3"], navigationView: AnyView(AccountsView()), isExpanded: true),
+        GroupItem(header: "Second", items: ["1", "2", "3"], navigationView: AnyView(EmptyView())),
+        GroupItem(header: "Third", items: ["1", "2", "3"], navigationView: AnyView(EmptyView()))
     ]
     
     var body: some View {
         NavigationView {
+            EmptyView()
             List {
                 ForEach(items.indices, id: \.self) { index in
-                    Section(header: HeaderView(headerText: self.items[index].header, isExpanded: self.$items[index].isExpanded)) {
-                        if self.items[index].isExpanded {
-                            ForEach(self.items[index].items, id: \.self) { item in
-                                Text(item)
-                            }
-                        }
-                    }
+                    MenuSection(group: self.$items[index])
                 }
                 .padding(.top)
             }
             .listStyle(GroupedListStyle())
             .navigationBarTitle("Menu", displayMode: .inline)
+        }
+    }
+}
+
+struct MenuSection<Group: StringProtocol, Item: Hashable & LosslessStringConvertible, NavigationView: View>: View {
+    @Binding var group: GroupItem<Group, Item, NavigationView>
+    
+    var body: some View {
+        Section(header: HeaderView(headerText: String(self.group.header), isExpanded: self.$group.isExpanded)) {
+            if self.group.isExpanded {
+                ForEach(self.group.items, id: \.self) { item in
+                    NavigationLink(destination: self.group.navigationView, label: { Text(String(item)) })
+                }
+            }
         }
     }
 }
