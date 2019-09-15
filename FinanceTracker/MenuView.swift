@@ -10,7 +10,7 @@ import SwiftUI
 
 struct GroupItem<Group: Hashable, Item: Hashable, NavigationView: View>: Identifiable, Hashable {
     static func == (lhs: GroupItem<Group, Item, NavigationView>, rhs: GroupItem<Group, Item, NavigationView>) -> Bool {
-        return lhs.header == rhs.header && lhs.id == rhs.id && lhs.items == rhs.items
+        return lhs.header == rhs.header && lhs.isExpanded == rhs.isExpanded && lhs.items == rhs.items
     }
     
     func hash(into hasher: inout Hasher) {
@@ -59,7 +59,6 @@ struct MenuView: View {
     
     var body: some View {
         NavigationView {
-            EmptyView()
             List {
                 ForEach(items.indices, id: \.self) { index in
                     MenuSection(group: self.$items[index])
