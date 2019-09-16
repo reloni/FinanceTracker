@@ -9,11 +9,19 @@
 import SwiftUI
 import UIKit
 
-struct Account: Identifiable {
+struct Account: Identifiable, Equatable {
     var id = UUID()
     var title: String
     var initialAmount: Int
     var currency: Currency
+}
+
+struct AppState {
+    var accounts: [Account] = [
+        Account(title: "Cash", initialAmount: 10, currency: .rub),
+        Account(title: "Card 1", initialAmount: 1000, currency: .eur),
+        Account(title: "Card 2", initialAmount: 2400, currency: .usd)
+    ]
 }
 
 struct Currency: Equatable {
@@ -25,18 +33,15 @@ struct Currency: Equatable {
 }
 
 struct AccountsView: View {
-    @State var accounts = [
-        Account(title: "Cash", initialAmount: 10, currency: .rub),
-        Account(title: "Card 1", initialAmount: 1000, currency: .eur),
-        Account(title: "Card 2", initialAmount: 2400, currency: .usd)
-    ]
+    @EnvironmentObject var store: Store<AppState, Void>
     
     var body: some View {
-        List(accounts) { account in
-            NavigationLink(destination: AccountView(account)) {
-                VStack {
+        List(store.state.accounts) { account in
+            NavigationLink(destination: AccountView(account) ) {
+                VStack(alignment: .leading) {
                     Text(account.title)
                     Text("\(account.initialAmount)")
+                    Text("\(account.currency.code)")
                 }
             }
         }
@@ -49,7 +54,11 @@ struct AccountView: View {
         let original: Account
         var editing: Account
 
-        var index: Int
+        var index: Int {
+            didSet {
+                editing.currency = currencies[index]
+            }
+        }
         let currencies: [Currency] = [.eur, .rub, .usd]
         
         var amount: String {
@@ -70,6 +79,7 @@ struct AccountView: View {
     
     @ObservedObject var model: AccountModel
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var store: Store<AppState, Void>
     
     init(_ account: Account) {
         self.model = AccountModel(account)
@@ -99,6 +109,9 @@ struct AccountView: View {
     
     func save() {
         presentationMode.wrappedValue.dismiss()
+        if let index = store.state.accounts.firstIndex(where: { $0 == model.original }) {
+            store.state.accounts[index] = model.editing
+        }
     }
 }
 
