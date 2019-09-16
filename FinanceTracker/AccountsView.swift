@@ -16,7 +16,7 @@ struct Account: Identifiable {
     var currency: Currency
 }
 
-struct Currency {
+struct Currency: Equatable {
     let code: String
     
     static let rub = Currency(code: "RUB")
@@ -33,7 +33,7 @@ struct AccountsView: View {
     
     var body: some View {
         List(accounts) { account in
-            NavigationLink(destination: AccountView()) {
+            NavigationLink(destination: AccountView(account)) {
                 VStack {
                     Text(account.title)
                     Text("\(account.initialAmount)")
@@ -45,23 +45,65 @@ struct AccountsView: View {
 }
 
 struct AccountView: View {
-    @State var title = ""
-    @State var initialAmount = ""
-    @State var index = 0
-    let currencies: [Currency] = [.eur, .rub, .usd]
+    class AccountModel: ObservableObject {
+        let original: Account
+        var editing: Account
+
+        var index: Int
+        let currencies: [Currency] = [.eur, .rub, .usd]
+        
+        var amount: String {
+            get { return "\(editing.initialAmount)" }
+            set { editing.initialAmount = Int(newValue) ?? 0 }
+        }
+        
+        init(_ account: Account) {
+            self.original = account
+            self.editing = account
+            index = currencies.firstIndex(where: { $0 == account.currency })!
+        }
+        
+        func reset() {
+            editing = original
+        }
+    }
+    
+    @ObservedObject var model: AccountModel
+    @Environment(\.presentationMode) var presentationMode
+    
+    init(_ account: Account) {
+        self.model = AccountModel(account)
+    }
+    
     var body: some View {
         Form {
-            TextField("Title", text: self.$title)
-            TextField("Initial amount", text: self.$initialAmount)
+            TextField("Title", text: self.$model.editing.title)
+            
+            TextField("Initial amount", text: self.$model.amount)
                 .keyboardType(.decimalPad)
-            Picker(selection: self.$index, label: Text("Currency")) {
-                ForEach(0..<currencies.count) {
-                    Text(self.currencies[$0].code)
+            Picker(selection: self.$model.index, label: Text("Currency")) {
+                ForEach(0..<self.model.currencies.count) {
+                    Text(self.model.currencies[$0].code)
                 }
             }
         }
+        .navigationBarItems(leading: Button(action: { self.dismiss() }) { Image(systemName: "chevron.left").font(Font.title.weight(.semibold)) },
+                            trailing: Button(action: { self.save() }) { Text("Save") })
         .navigationBarTitle("Account", displayMode: .inline)
     }
+    
+    func dismiss() {
+        presentationMode.wrappedValue.dismiss()
+        model.reset()
+    }
+    
+    func save() {
+        presentationMode.wrappedValue.dismiss()
+    }
+}
+
+func bold() -> Font {
+    return Font.title.bold()
 }
 
 struct MultilineTextView: UIViewRepresentable {
