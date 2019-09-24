@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UIKit
+import CoreData
 
 struct Account: Identifiable, Equatable {
     var id = UUID()
