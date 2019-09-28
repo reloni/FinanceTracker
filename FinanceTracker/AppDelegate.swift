@@ -42,14 +42,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, NSFetchedResultsControlle
             
 //            print(self.frc.object(at: IndexPath(item: 0, section: 0)))
             
-            try! self.frc.performFetch()
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+//            try! self.frc.performFetch()
             
-                print(self.frc.sections?.count)
-                print(self.frc.sections?[0].numberOfObjects)
-                print(self.frc.fetchedObjects?.first?.title)
-                print(self.frc.object(at: IndexPath(item: 0, section: 0)))
-            }
+//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+            
+//                print(self.frc.sections?.count)
+//                print(self.frc.sections?[0].numberOfObjects)
+//                print(self.frc.fetchedObjects?.first?.title)
+//                print(self.frc.object(at: IndexPath(item: 0, section: 0)))
+                
+                print("--")
+                
+                let r = try! self.persistentContainer.viewContext.fetch(self.request)
+                
+            print(r.map { $0.title })
+                print(r.first?
+                    .value(forKey: "title"))
+//            }
         }
         return true
     }

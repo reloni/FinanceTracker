@@ -17,6 +17,21 @@ struct Account: Identifiable, Equatable {
     var currency: Currency
 }
 
+extension CloudAccount: Identifiable {
+    
+}
+
+extension CloudAccount {
+    static func allItems() -> NSFetchRequest<CloudAccount> {
+//        let request: NSFetchRequest<CloudAccount> = CloudAccount.fetchRequest() as! NSFetchRequest<CloudAccount>
+        let request: NSFetchRequest<CloudAccount> = CloudAccount.fetchRequest()
+        // ❇️ The @FetchRequest property wrapper in the ContentView requires a sort descriptor
+//        request.sortDescriptors = [NSSortDescriptor(key: "ideaTitle", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        return request
+    }
+}
+
 struct AppState {
     var accounts: [Account] = [
         Account(title: "Cash", initialAmount: 10, currency: .rub),
@@ -35,16 +50,38 @@ struct Currency: Equatable {
 
 struct AccountsView: View {
     @EnvironmentObject var store: Store<AppState, Void>
+    @Environment(\.managedObjectContext) var context
+    @FetchRequest(fetchRequest: CloudAccount.allItems()) var accounts: FetchedResults<CloudAccount>
     
     var body: some View {
-        List(store.state.accounts) { account in
-            NavigationLink(destination: AccountView(account) ) {
+//        List(accounts) { account in
+        List {
+            ForEach(accounts) { account in
                 VStack(alignment: .leading) {
-                    Text(account.title)
+                    Text(account.title ?? "")
                     Text("\(account.initialAmount)")
-                    Text("\(account.currency.code)")
                 }
             }
+                .onDelete { set in
+                    print(set)
+                    self.context.delete(self.accounts[set.first!])
+                    try! self.context.save()
+                }
+            .onTapGesture {
+                print("!")
+                let newAccount = CloudAccount(entity: CloudAccount.entity(), insertInto: self.context)
+                newAccount.title = UUID().uuidString
+                newAccount.initialAmount = Int64.random(in: 0...1000)
+                try! self.context.save()
+            }
+
+//            NavigationLink(destination: AccountView(account) ) {
+//                VStack(alignment: .leading) {
+//                    Text(account.title)
+//                    Text("\(account.initialAmount)")
+//                    Text("\(account.currency.code)")
+//                }
+//            }
         }
             .navigationBarTitle("Accounts", displayMode: .inline)
     }
