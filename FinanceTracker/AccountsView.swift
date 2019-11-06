@@ -27,6 +27,12 @@ extension CloudAccount {
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         return request
     }
+    
+    static func fetchRequest2() -> FetchRequest<CloudAccount> {
+        return FetchRequest<CloudAccount>(
+                     sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)],
+                     animation: .easeInOut(duration: 3))
+    }
 }
 
 struct AppState {
@@ -48,7 +54,11 @@ struct Currency: Equatable {
 struct AccountsView: View {
     @EnvironmentObject var store: Store<AppState, Void>
     @Environment(\.managedObjectContext) var context
-    @FetchRequest(fetchRequest: CloudAccount.allItems()) var accounts: FetchedResults<CloudAccount>
+    
+    let request = CloudAccount.fetchRequest2()
+    var accounts: FetchedResults<CloudAccount> { return request.wrappedValue }
+//    @FetchRequest(fetchRequest: CloudAccount.allItems()) var accounts: FetchedResults<CloudAccount>
+//    @FetchRequest(fetchRequest: CloudAccount.allItems(), animation: .spring(response: 5, dampingFraction: 6, blendDuration: 1)) var accounts: FetchedResults<CloudAccount>
     
     var body: some View {
         List {
@@ -61,13 +71,13 @@ struct AccountsView: View {
             .onDelete { set in
                 print(set)
                 self.context.delete(self.accounts[set.first!])
-                try! self.context.save()
+//                try! self.context.save()
             }
             .onTapGesture {
                 let newAccount = CloudAccount(entity: CloudAccount.entity(), insertInto: self.context)
                 newAccount.title = UUID().uuidString
                 newAccount.initialAmount = Int64.random(in: 0...1000)
-                try! self.context.save()
+//                try! self.context.save()
             }
 
 //            NavigationLink(destination: AccountView(account) ) {
