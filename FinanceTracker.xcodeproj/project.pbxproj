@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E07B5CC233A447A00443B2C /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E07B5CB233A447A00443B2C /* CloudKit.framework */; };
 		6E75C602232FF57F00AC2A64 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E75C601232FF57F00AC2A64 /* Store.swift */; };
 		6E79109D232BCF7F00A60CE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E79109C232BCF7F00A60CE2 /* AppDelegate.swift */; };
 		6E79109F232BCF7F00A60CE2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E79109E232BCF7F00A60CE2 /* SceneDelegate.swift */; };
@@ -39,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6E07B5C9233A447100443B2C /* FinanceTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FinanceTracker.entitlements; sourceTree = "<group>"; };
+		6E07B5CB233A447A00443B2C /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		6E75C601232FF57F00AC2A64 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		6E791099232BCF7F00A60CE2 /* FinanceTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinanceTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E79109C232BCF7F00A60CE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -64,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E07B5CC233A447A00443B2C /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +88,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E07B5CA233A447A00443B2C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6E07B5CB233A447A00443B2C /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		6E791090232BCF7E00A60CE2 = {
 			isa = PBXGroup;
 			children = (
@@ -91,6 +103,7 @@
 				6E7910B5232BCF8000A60CE2 /* FinanceTrackerTests */,
 				6E7910C0232BCF8000A60CE2 /* FinanceTrackerUITests */,
 				6E79109A232BCF7F00A60CE2 /* Products */,
+				6E07B5CA233A447A00443B2C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -107,6 +120,7 @@
 		6E79109B232BCF7F00A60CE2 /* FinanceTracker */ = {
 			isa = PBXGroup;
 			children = (
+				6E07B5C9233A447100443B2C /* FinanceTracker.entitlements */,
 				6E79109C232BCF7F00A60CE2 /* AppDelegate.swift */,
 				6E79109E232BCF7F00A60CE2 /* SceneDelegate.swift */,
 				6E7910A3232BCF7F00A60CE2 /* ContentView.swift */,
@@ -450,6 +464,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FinanceTracker/FinanceTracker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"FinanceTracker/Preview Content\"";
 				DEVELOPMENT_TEAM = SJMSRXG797;
@@ -470,6 +485,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FinanceTracker/FinanceTracker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"FinanceTracker/Preview Content\"";
 				DEVELOPMENT_TEAM = SJMSRXG797;

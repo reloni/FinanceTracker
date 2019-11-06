@@ -8,12 +8,25 @@
 
 import SwiftUI
 import UIKit
+import CoreData
 
 struct Account: Identifiable, Equatable {
     var id = UUID()
     var title: String
     var initialAmount: Int
     var currency: Currency
+}
+
+extension CloudAccount: Identifiable {
+    
+}
+
+extension CloudAccount {
+    static func allItems() -> NSFetchRequest<CloudAccount> {
+        let request: NSFetchRequest<CloudAccount> = CloudAccount.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        return request
+    }
 }
 
 struct AppState {
@@ -34,16 +47,36 @@ struct Currency: Equatable {
 
 struct AccountsView: View {
     @EnvironmentObject var store: Store<AppState, Void>
+    @Environment(\.managedObjectContext) var context
+    @FetchRequest(fetchRequest: CloudAccount.allItems()) var accounts: FetchedResults<CloudAccount>
     
     var body: some View {
-        List(store.state.accounts) { account in
-            NavigationLink(destination: AccountView(account) ) {
+        List {
+            ForEach(accounts) { account in
                 VStack(alignment: .leading) {
-                    Text(account.title)
+                    Text(account.title ?? "")
                     Text("\(account.initialAmount)")
-                    Text("\(account.currency.code)")
                 }
             }
+            .onDelete { set in
+                print(set)
+                self.context.delete(self.accounts[set.first!])
+                try! self.context.save()
+            }
+            .onTapGesture {
+                let newAccount = CloudAccount(entity: CloudAccount.entity(), insertInto: self.context)
+                newAccount.title = UUID().uuidString
+                newAccount.initialAmount = Int64.random(in: 0...1000)
+                try! self.context.save()
+            }
+
+//            NavigationLink(destination: AccountView(account) ) {
+//                VStack(alignment: .leading) {
+//                    Text(account.title)
+//                    Text("\(account.initialAmount)")
+//                    Text("\(account.currency.code)")
+//                }
+//            }
         }
             .navigationBarTitle("Accounts", displayMode: .inline)
     }
@@ -111,44 +144,6 @@ struct AccountView: View {
         presentationMode.wrappedValue.dismiss()
         if let index = store.state.accounts.firstIndex(where: { $0 == model.original }) {
             store.state.accounts[index] = model.editing
-        }
-    }
-}
-
-func bold() -> Font {
-    return Font.title.bold()
-}
-
-struct MultilineTextView: UIViewRepresentable {
-    var placeholder: String = ""
-    @Binding var text: String
-
-    func makeUIView(context: Context) -> UITextView {
-        let view = UITextView()
-        view.font = UIFont.preferredFont(forTextStyle: .body)
-//        view.isScrollEnabled = true
-        view.isEditable = true
-        view.isUserInteractionEnabled = true
-        return view
-    }
-
-    func updateUIView(_ uiView: UITextView, context: Context) {
-        uiView.text = text
-    }
-}
-
-struct DismissingKeyboard: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .onTapGesture {
-                
-                let keyWindow = UIApplication.shared.connectedScenes
-                        .filter({$0.activationState == .foregroundActive})
-                        .map({$0 as? UIWindowScene})
-                        .compactMap({$0})
-                        .first?.windows
-                        .filter({$0.isKeyWindow}).first
-                keyWindow?.endEditing(true)
         }
     }
 }
