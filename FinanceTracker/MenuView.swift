@@ -41,9 +41,9 @@ struct HeaderView: View {
             Spacer()
             
             Button(action: { self.isExpanded.toggle() }, label: {
-                Image(systemName: "chevron.up")
+                Image(systemName: "chevron.down")
                     .font(.headline)
-                    .rotationEffect(.degrees(isExpanded ? 0 : 180))
+                    .rotationEffect(.degrees(isExpanded ? 0 : -90))
                     .animation(.easeInOut)
             })
         }
