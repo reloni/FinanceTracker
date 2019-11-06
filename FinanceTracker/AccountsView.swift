@@ -23,10 +23,7 @@ extension CloudAccount: Identifiable {
 
 extension CloudAccount {
     static func allItems() -> NSFetchRequest<CloudAccount> {
-//        let request: NSFetchRequest<CloudAccount> = CloudAccount.fetchRequest() as! NSFetchRequest<CloudAccount>
         let request: NSFetchRequest<CloudAccount> = CloudAccount.fetchRequest()
-        // ❇️ The @FetchRequest property wrapper in the ContentView requires a sort descriptor
-//        request.sortDescriptors = [NSSortDescriptor(key: "ideaTitle", ascending: true)]
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         return request
     }
@@ -54,7 +51,6 @@ struct AccountsView: View {
     @FetchRequest(fetchRequest: CloudAccount.allItems()) var accounts: FetchedResults<CloudAccount>
     
     var body: some View {
-//        List(accounts) { account in
         List {
             ForEach(accounts) { account in
                 VStack(alignment: .leading) {
@@ -62,13 +58,12 @@ struct AccountsView: View {
                     Text("\(account.initialAmount)")
                 }
             }
-                .onDelete { set in
-                    print(set)
-                    self.context.delete(self.accounts[set.first!])
-                    try! self.context.save()
-                }
+            .onDelete { set in
+                print(set)
+                self.context.delete(self.accounts[set.first!])
+                try! self.context.save()
+            }
             .onTapGesture {
-                print("!")
                 let newAccount = CloudAccount(entity: CloudAccount.entity(), insertInto: self.context)
                 newAccount.title = UUID().uuidString
                 newAccount.initialAmount = Int64.random(in: 0...1000)
@@ -149,44 +144,6 @@ struct AccountView: View {
         presentationMode.wrappedValue.dismiss()
         if let index = store.state.accounts.firstIndex(where: { $0 == model.original }) {
             store.state.accounts[index] = model.editing
-        }
-    }
-}
-
-func bold() -> Font {
-    return Font.title.bold()
-}
-
-struct MultilineTextView: UIViewRepresentable {
-    var placeholder: String = ""
-    @Binding var text: String
-
-    func makeUIView(context: Context) -> UITextView {
-        let view = UITextView()
-        view.font = UIFont.preferredFont(forTextStyle: .body)
-//        view.isScrollEnabled = true
-        view.isEditable = true
-        view.isUserInteractionEnabled = true
-        return view
-    }
-
-    func updateUIView(_ uiView: UITextView, context: Context) {
-        uiView.text = text
-    }
-}
-
-struct DismissingKeyboard: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .onTapGesture {
-                
-                let keyWindow = UIApplication.shared.connectedScenes
-                        .filter({$0.activationState == .foregroundActive})
-                        .map({$0 as? UIWindowScene})
-                        .compactMap({$0})
-                        .first?.windows
-                        .filter({$0.isKeyWindow}).first
-                keyWindow?.endEditing(true)
         }
     }
 }
