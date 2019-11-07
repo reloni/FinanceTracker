@@ -18,13 +18,18 @@ struct Account: Identifiable, Equatable {
 }
 
 extension CloudAccount: Identifiable {
-    
+//    public var id: UUID {
+//        print("!!")
+//        return self.uuid!
+//
+//    }
 }
 
 extension CloudAccount {
     static func allItems() -> NSFetchRequest<CloudAccount> {
         let request: NSFetchRequest<CloudAccount> = CloudAccount.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        request.shouldRefreshRefetchedObjects = true
         return request
     }
     
@@ -70,14 +75,20 @@ struct AccountsView: View {
             }
             .onDelete { set in
                 print(set)
+//                let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.newBackgroundContext()
+//                let obj = context.object(with: self.accounts[set.first!].objectID)
+//                context.delete(obj)
+//                try! context.save()
+//                    .delete(self.accounts[set.first!])
                 self.context.delete(self.accounts[set.first!])
-//                try! self.context.save()
+                try! self.context.save()
             }
             .onTapGesture {
                 let newAccount = CloudAccount(entity: CloudAccount.entity(), insertInto: self.context)
+                newAccount.uuid = UUID()
                 newAccount.title = UUID().uuidString
                 newAccount.initialAmount = Int64.random(in: 0...1000)
-//                try! self.context.save()
+                try! self.context.save()
             }
 
 //            NavigationLink(destination: AccountView(account) ) {
@@ -88,6 +99,7 @@ struct AccountsView: View {
 //                }
 //            }
         }
+//        .onAppear(perform: { self.context.performfe })
             .navigationBarTitle("Accounts", displayMode: .inline)
     }
 }

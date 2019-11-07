@@ -52,9 +52,9 @@ struct HeaderView: View {
 
 struct MenuView: View {
     @State var items: [GroupItem<String, String, AnyView>] = [
-        GroupItem(header: "First", items: ["Accounts", "2", "3"], navigationView: AnyView(AccountsView()), isExpanded: true),
-        GroupItem(header: "Second", items: ["1", "2", "3"], navigationView: AnyView(EmptyView())),
-        GroupItem(header: "Third", items: ["1", "2", "3"], navigationView: AnyView(EmptyView()))
+        GroupItem(header: "First", items: ["Accounts"], navigationView: AnyView(Text("")), isExpanded: true),
+//        GroupItem(header: "Second", items: ["1", "2", "3"], navigationView: AnyView(EmptyView())),
+//        GroupItem(header: "Third", items: ["1", "2", "3"], navigationView: AnyView(EmptyView()))
     ]
     
     var body: some View {
@@ -78,7 +78,7 @@ struct MenuSection<Group: StringProtocol, Item: Hashable & LosslessStringConvert
         Section(header: HeaderView(headerText: String(self.group.header), isExpanded: self.$group.isExpanded)) {
             if self.group.isExpanded {
                 ForEach(self.group.items, id: \.self) { item in
-                    NavigationLink(destination: self.group.navigationView, label: { Text(String(item)) })
+                    NavigationLink(destination: AccountsView(), label: { Text(String(item)) })
                 }
             }
         }
