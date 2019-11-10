@@ -14,23 +14,25 @@ enum LogLevel: String {
     case error
 }
 
-struct EnvValueParser<A> {
-    let run: (String) -> A?
+struct Parser<Input, Output> {
+    let run: (Input) -> Output?
 }
 
-extension EnvValueParser {
-    static var `string`: EnvValueParser<String> { return EnvValueParser<String> { $0 } }
-    static var `bool`: EnvValueParser<Bool> { return EnvValueParser.string.pullback { Bool($0) } }
-    static var logLevel: EnvValueParser<LogLevel> { return EnvValueParser.string.pullback { LogLevel(rawValue: $0) } }
-    
-    func pullback<B>(_ transform: @escaping (A) -> B?) -> EnvValueParser<B> {
-        return EnvValueParser<B> { self.run($0).map { transform($0) } ?? nil }
+extension Parser {
+    func map<NewOutput>(_ transform: @escaping (Output) -> NewOutput?) -> Parser<Input, NewOutput> {
+        Parser<Input, NewOutput> { self.run($0).map { transform($0) } ?? nil }
     }
+}
+
+extension Parser where Input == String {
+    static var `string`: Parser<Input, String> { return .init { $0 } }
+    static var `bool`: Parser<Input, Bool> { return Parser.string.map { Bool($0) } }
+    static var logLevel: Parser<Input, LogLevel> { return Parser.string.map { LogLevel(rawValue: $0) } }
 }
 
 struct EnvironmentVariable<T> {
     let name: String
-    let parser: EnvValueParser<T>
+    let parser: Parser<String, T>
 }
 
 extension EnvironmentVariable {
