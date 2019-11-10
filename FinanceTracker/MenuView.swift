@@ -39,7 +39,6 @@ struct GroupItem<Group: Hashable, Item: Hashable>: Identifiable, Hashable {
     
     var header: Group
     var items: [GroupElement]
-//    var navigationView: AnyView
     var isExpanded: Bool = false
 }
 
@@ -67,7 +66,11 @@ struct HeaderView: View {
 struct MenuView: View {
     @State var items: [GroupItem<String, String>] = [
         GroupItem(header: "First",
-                  items: [.init("Accounts", AccountsView()), .init("2", EmptyView()), .init("3", EmptyView())],
+                  items: [
+                    .init("Accounts", AccountsView()),
+                    .init("2", OtherView(account: Account(id: UUID(), title: "Account title", initialAmount: 1, currency: .eur))),
+                    .init("3", AccountView(Account(id: UUID(), title: "Acc title", initialAmount: 12312124, currency: .usd)))
+                    ],
                   isExpanded: true),
         GroupItem(header: "Second", items: [.init("1", EmptyView()), .init("2", EmptyView())]),
         GroupItem(header: "Third", items: [.init("1", EmptyView()), .init("2", EmptyView())])
@@ -97,5 +100,15 @@ struct MenuSection<Group: StringProtocol, Item: Hashable & LosslessStringConvert
                 }
             }
         }
+    }
+}
+
+
+struct OtherView: View {
+    @State var account: Account
+
+    var body: some View {
+        TextField("Title", text: self.$account.title)
+            .onDisappear(perform: { print(self.account.title) })
     }
 }

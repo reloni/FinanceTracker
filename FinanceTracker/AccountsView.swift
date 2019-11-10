@@ -13,17 +13,20 @@ import CoreData
 struct Account: Identifiable, Equatable {
     var id = UUID()
     var title: String
-    var initialAmount: Int
+    var initialAmount: Int64
     var currency: Currency
 }
 
-extension CloudAccount: Identifiable {
-//    public var id: UUID {
-//        print("!!")
-//        return self.uuid!
-//
-//    }
+extension Account {
+    init(_ cloud: CloudAccount) {
+        self.id = cloud.uuid!
+        self.initialAmount = cloud.initialAmount
+        self.title = cloud.title!
+        self.currency = .eur
+    }
 }
+
+extension CloudAccount: Identifiable { }
 
 extension CloudAccount {
     static func allItems() -> NSFetchRequest<CloudAccount> {
@@ -105,52 +108,32 @@ struct AccountsView: View {
 }
 
 struct AccountView: View {
-    class AccountModel: ObservableObject {
-        let original: Account
-        var editing: Account
-
-        var index: Int {
-            didSet {
-                editing.currency = currencies[index]
-            }
-        }
-        let currencies: [Currency] = [.eur, .rub, .usd]
-        
-        var amount: String {
-            get { return "\(editing.initialAmount)" }
-            set { editing.initialAmount = Int(newValue) ?? 0 }
-        }
-        
-        init(_ account: Account) {
-            self.original = account
-            self.editing = account
-            index = currencies.firstIndex(where: { $0 == account.currency })!
-        }
-        
-        func reset() {
-            editing = original
-        }
+    @State var account: Account
+    var amount: Binding<String> { Binding<String>(
+        get: { "\(self.account.initialAmount)" },
+        set: { self.account.initialAmount = Int64($0) ?? 0 }
+        )
     }
-    
-    @ObservedObject var model: AccountModel
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var store: Store<AppState, Void>
     
     init(_ account: Account) {
-        self.model = AccountModel(account)
+        _account = State(initialValue: account)
     }
     
     var body: some View {
         Form {
-            TextField("Title", text: self.$model.editing.title)
-            
-            TextField("Initial amount", text: self.$model.amount)
+            TextField("Title", text: self.$account.title)
+                        
+            TextField("Initial amount", text: self.amount)
                 .keyboardType(.decimalPad)
-            Picker(selection: self.$model.index, label: Text("Currency")) {
-                ForEach(0..<self.model.currencies.count) {
-                    Text(self.model.currencies[$0].code)
-                }
-            }
+            
+            Text("Currency: \(account.currency.code)")
+//            Picker(selection: self.$model.index, label: Text("Currency")) {
+//                ForEach(0..<self.model.currencies.count) {
+//                    Text(self.model.currencies[$0].code)
+//                }
+//            }
         }
         .navigationBarItems(leading: Button(action: { self.dismiss() }) { Image(systemName: "chevron.left").font(Font.title.weight(.semibold)) },
                             trailing: Button(action: { self.save() }) { Text("Save") })
@@ -159,13 +142,13 @@ struct AccountView: View {
     
     func dismiss() {
         presentationMode.wrappedValue.dismiss()
-        model.reset()
     }
     
     func save() {
+        print(account)
         presentationMode.wrappedValue.dismiss()
-        if let index = store.state.accounts.firstIndex(where: { $0 == model.original }) {
-            store.state.accounts[index] = model.editing
-        }
+//        if let index = store.state.accounts.firstIndex(where: { $0 == model.original }) {
+//            store.state.accounts[index] = model.editing
+//        }
     }
 }
