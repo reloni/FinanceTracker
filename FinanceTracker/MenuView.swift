@@ -8,15 +8,29 @@
 
 import SwiftUI
 
-struct GroupItem<Group: Hashable, Item: Hashable, NavigationView: View>: Identifiable, Hashable {
-    static func == (lhs: GroupItem<Group, Item, NavigationView>, rhs: GroupItem<Group, Item, NavigationView>) -> Bool {
+struct GroupItem<Group: Hashable, Item: Hashable>: Identifiable, Hashable {
+    struct GroupElement: Equatable {
+        let label: String
+        let navigationView: AnyView
+        
+        init<T: View>(_ label: String, _ navigationView: T) {
+            self.label = label
+            self.navigationView = AnyView(navigationView)
+        }
+        
+        static func == (lhs: GroupElement, rhs: GroupElement) -> Bool {
+            return lhs.label == rhs.label
+        }
+    }
+    
+    static func == (lhs: GroupItem<Group, Item>, rhs: GroupItem<Group, Item>) -> Bool {
         return lhs.header == rhs.header && lhs.isExpanded == rhs.isExpanded && lhs.items == rhs.items
     }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(header)
         hasher.combine(id)
-        hasher.combine(items)
+        hasher.combine(items.map { $0.label })
     }
     
     var id: Group {
@@ -24,8 +38,8 @@ struct GroupItem<Group: Hashable, Item: Hashable, NavigationView: View>: Identif
     }
     
     var header: Group
-    var items: [Item]
-    var navigationView: NavigationView
+    var items: [GroupElement]
+//    var navigationView: AnyView
     var isExpanded: Bool = false
 }
 
@@ -51,10 +65,12 @@ struct HeaderView: View {
 }
 
 struct MenuView: View {
-    @State var items: [GroupItem<String, String, AccountsView>] = [
-        GroupItem(header: "First", items: ["Accounts", "2", "3"], navigationView: AccountsView(), isExpanded: true),
-        GroupItem(header: "Second", items: ["1", "2", "3"], navigationView: AccountsView()),
-        GroupItem(header: "Third", items: ["1", "2", "3"], navigationView: AccountsView())
+    @State var items: [GroupItem<String, String>] = [
+        GroupItem(header: "First",
+                  items: [.init("Accounts", AccountsView()), .init("2", EmptyView()), .init("3", EmptyView())],
+                  isExpanded: true),
+        GroupItem(header: "Second", items: [.init("1", EmptyView()), .init("2", EmptyView())]),
+        GroupItem(header: "Third", items: [.init("1", EmptyView()), .init("2", EmptyView())])
     ]
     
     var body: some View {
@@ -63,7 +79,6 @@ struct MenuView: View {
                 ForEach(items.indices, id: \.self) { index in
                     MenuSection(group: self.$items[index])
                 }
-                .padding(.top)
             }
             .listStyle(GroupedListStyle())
             .navigationBarTitle("Menu", displayMode: .inline)
@@ -71,14 +86,14 @@ struct MenuView: View {
     }
 }
 
-struct MenuSection<Group: StringProtocol, Item: Hashable & LosslessStringConvertible, NavigationView: View>: View {
-    @Binding var group: GroupItem<Group, Item, NavigationView>
+struct MenuSection<Group: StringProtocol, Item: Hashable & LosslessStringConvertible>: View {
+    @Binding var group: GroupItem<Group, Item>
     
     var body: some View {
         Section(header: HeaderView(headerText: String(self.group.header), isExpanded: self.$group.isExpanded)) {
             if self.group.isExpanded {
-                ForEach(self.group.items, id: \.self) { item in
-                    NavigationLink(destination: self.group.navigationView, label: { Text(String(item)) })
+                ForEach(self.group.items, id: \.label) { item in
+                    NavigationLink(destination: item.navigationView, label: { Text(String(item.label)) })
                 }
             }
         }
