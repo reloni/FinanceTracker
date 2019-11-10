@@ -32,7 +32,11 @@ extension Parser where Input == String {
 
 struct EnvironmentVariable<T> {
     let name: String
-    let parser: Parser<String, T>
+    private let parser: Parser<String, T>
+    
+    func parse(_ value: String) -> T? {
+        parser.run(value)
+    }
 }
 
 extension EnvironmentVariable {
@@ -42,12 +46,12 @@ extension EnvironmentVariable {
 
 
 struct AppEnvironment {
-    private let value: (String) -> String?
-    
     static let current = AppEnvironment { ProcessInfo.processInfo.environment[$0] }
+    
+    private let value: (String) -> String?
 
     func value<T>(_ variable: EnvironmentVariable<T>) -> T? {
-        value(variable.name).map { variable.parser.run($0) } ?? nil
+        value(variable.name).map { variable.parse($0) } ?? nil
     }
 }
 
