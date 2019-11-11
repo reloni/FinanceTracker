@@ -12,7 +12,6 @@
 		6E79109D232BCF7F00A60CE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E79109C232BCF7F00A60CE2 /* AppDelegate.swift */; };
 		6E79109F232BCF7F00A60CE2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E79109E232BCF7F00A60CE2 /* SceneDelegate.swift */; };
 		6E7910A2232BCF7F00A60CE2 /* FinanceTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6E7910A0232BCF7F00A60CE2 /* FinanceTracker.xcdatamodeld */; };
-		6E7910A4232BCF7F00A60CE2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7910A3232BCF7F00A60CE2 /* ContentView.swift */; };
 		6E7910A6232BCF8000A60CE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E7910A5232BCF8000A60CE2 /* Assets.xcassets */; };
 		6E7910A9232BCF8000A60CE2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E7910A8232BCF8000A60CE2 /* Preview Assets.xcassets */; };
 		6E7910AC232BCF8000A60CE2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E7910AA232BCF8000A60CE2 /* LaunchScreen.storyboard */; };
@@ -47,7 +46,6 @@
 		6E79109C232BCF7F00A60CE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6E79109E232BCF7F00A60CE2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6E7910A1232BCF7F00A60CE2 /* FinanceTracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FinanceTracker.xcdatamodel; sourceTree = "<group>"; };
-		6E7910A3232BCF7F00A60CE2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6E7910A5232BCF8000A60CE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6E7910A8232BCF8000A60CE2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6E7910AB232BCF8000A60CE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -123,7 +121,6 @@
 				6E07B5C9233A447100443B2C /* FinanceTracker.entitlements */,
 				6E79109C232BCF7F00A60CE2 /* AppDelegate.swift */,
 				6E79109E232BCF7F00A60CE2 /* SceneDelegate.swift */,
-				6E7910A3232BCF7F00A60CE2 /* ContentView.swift */,
 				6E7910A5232BCF8000A60CE2 /* Assets.xcassets */,
 				6E7910AA232BCF8000A60CE2 /* LaunchScreen.storyboard */,
 				6E7910AD232BCF8000A60CE2 /* Info.plist */,
@@ -298,7 +295,6 @@
 				6E7910A2232BCF7F00A60CE2 /* FinanceTracker.xcdatamodeld in Sources */,
 				6ED1F9A8232BF36200412DB3 /* AccountsView.swift in Sources */,
 				6E79109D232BCF7F00A60CE2 /* AppDelegate.swift in Sources */,
-				6E7910A4232BCF7F00A60CE2 /* ContentView.swift in Sources */,
 				6E79109F232BCF7F00A60CE2 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
