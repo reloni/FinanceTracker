@@ -15,14 +15,17 @@ struct Account: Identifiable, Equatable {
     var title: String
     var initialAmount: Int64
     var currency: Currency
+    var managedObjectId: NSManagedObjectID? = nil
 }
 
 extension Account {
     init(_ cloud: CloudAccount) {
+        print("init from cloud")
         self.id = cloud.uuid!
         self.initialAmount = cloud.initialAmount
         self.title = cloud.title!
         self.currency = .eur
+        self.managedObjectId = cloud.objectID
     }
 }
 
@@ -71,9 +74,11 @@ struct AccountsView: View {
     var body: some View {
         List {
             ForEach(accounts) { account in
-                VStack(alignment: .leading) {
-                    Text(account.title ?? "")
-                    Text("\(account.initialAmount)")
+                NavigationLink(destination: AccountView(Account(account))) {
+                    VStack(alignment: .leading) {
+                        Text(account.title ?? "")
+                        Text("\(account.initialAmount)")
+                    }
                 }
             }
             .onDelete { set in
@@ -86,13 +91,13 @@ struct AccountsView: View {
                 self.context.delete(self.accounts[set.first!])
                 try! self.context.save()
             }
-            .onTapGesture {
-                let newAccount = CloudAccount(entity: CloudAccount.entity(), insertInto: self.context)
-                newAccount.uuid = UUID()
-                newAccount.title = UUID().uuidString
-                newAccount.initialAmount = Int64.random(in: 0...1000)
-                try! self.context.save()
-            }
+//            .onTapGesture {
+//                let newAccount = CloudAccount(entity: CloudAccount.entity(), insertInto: self.context)
+//                newAccount.uuid = UUID()
+//                newAccount.title = UUID().uuidString
+//                newAccount.initialAmount = Int64.random(in: 0...1000)
+//                try! self.context.save()
+//            }
 
 //            NavigationLink(destination: AccountView(account) ) {
 //                VStack(alignment: .leading) {
@@ -116,6 +121,7 @@ struct AccountView: View {
     }
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var store: Store<AppState, Void>
+    @Environment(\.managedObjectContext) var context
     
     init(_ account: Account) {
         _account = State(initialValue: account)
@@ -145,10 +151,12 @@ struct AccountView: View {
     }
     
     func save() {
-        print(account)
+        if let id = account.managedObjectId {
+            let cloud = context.object(with: id) as! CloudAccount
+            cloud.initialAmount = account.initialAmount
+            cloud.title = account.title
+            try! context.save()
+        }
         presentationMode.wrappedValue.dismiss()
-//        if let index = store.state.accounts.firstIndex(where: { $0 == model.original }) {
-//            store.state.accounts[index] = model.editing
-//        }
     }
 }
