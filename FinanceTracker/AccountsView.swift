@@ -20,9 +20,9 @@ struct Account: Identifiable, Equatable {
 
 extension Account {
     init(_ cloud: CloudAccount) {
-        self.id = cloud.uuid!
+        self.id = cloud.uuid
         self.initialAmount = cloud.initialAmount
-        self.title = cloud.title!
+        self.title = cloud.title
         self.currency = .eur
         self.managedObjectId = cloud.objectID
     }
@@ -80,7 +80,7 @@ struct AccountsView: View {
                 ForEach(accounts) { account in
                     NavigationLink(destination: AccountView(Account(account))) {
                         VStack(alignment: .leading) {
-                            Text(account.title ?? "")
+                            Text(account.title)
                             Text("\(account.initialAmount)")
                         }
                     }
