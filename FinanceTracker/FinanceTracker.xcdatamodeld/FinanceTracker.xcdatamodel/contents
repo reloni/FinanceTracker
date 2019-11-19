@@ -4,8 +4,24 @@
         <attribute name="initialAmount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="uuid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="currency" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CloudCurrency" inverseName="accounts" inverseEntity="CloudCurrency"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="uuid"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CloudCurrency" representedClassName="CloudCurrency" syncable="YES">
+        <attribute name="code" optional="YES" attributeType="String"/>
+        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CloudAccount" inverseName="currency" inverseEntity="CloudAccount"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="code"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="CloudAccount" positionX="-54" positionY="-9" width="128" height="88"/>
+        <element name="CloudAccount" positionX="-54" positionY="-9" width="128" height="103"/>
+        <element name="CloudCurrency" positionX="-54" positionY="18" width="128" height="73"/>
     </elements>
 </model>

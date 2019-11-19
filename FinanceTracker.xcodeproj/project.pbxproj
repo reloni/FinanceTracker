@@ -20,6 +20,8 @@
 		6E7910D0232BD1D500A60CE2 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7910CF232BD1D500A60CE2 /* MenuView.swift */; };
 		6EAE7CFD238455BD00528D8F /* CloudAccount+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAE7CFB238455BD00528D8F /* CloudAccount+CoreDataClass.swift */; };
 		6EAE7CFE238455BD00528D8F /* CloudAccount+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAE7CFC238455BD00528D8F /* CloudAccount+CoreDataProperties.swift */; };
+		6EAE7D012384590200528D8F /* CloudCurrency+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAE7CFF2384590200528D8F /* CloudCurrency+CoreDataClass.swift */; };
+		6EAE7D022384590200528D8F /* CloudCurrency+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAE7D002384590200528D8F /* CloudCurrency+CoreDataProperties.swift */; };
 		6ED1F9A8232BF36200412DB3 /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED1F9A7232BF36200412DB3 /* AccountsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +63,8 @@
 		6E7910CF232BD1D500A60CE2 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		6EAE7CFB238455BD00528D8F /* CloudAccount+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CloudAccount+CoreDataClass.swift"; path = "FinanceTracker/CloudAccount+CoreDataClass.swift"; sourceTree = "<group>"; };
 		6EAE7CFC238455BD00528D8F /* CloudAccount+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CloudAccount+CoreDataProperties.swift"; path = "FinanceTracker/CloudAccount+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		6EAE7CFF2384590200528D8F /* CloudCurrency+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CloudCurrency+CoreDataClass.swift"; path = "FinanceTracker/CloudCurrency+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6EAE7D002384590200528D8F /* CloudCurrency+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CloudCurrency+CoreDataProperties.swift"; path = "FinanceTracker/CloudCurrency+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		6ED1F9A7232BF36200412DB3 /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +105,8 @@
 		6E791090232BCF7E00A60CE2 = {
 			isa = PBXGroup;
 			children = (
+				6EAE7CFF2384590200528D8F /* CloudCurrency+CoreDataClass.swift */,
+				6EAE7D002384590200528D8F /* CloudCurrency+CoreDataProperties.swift */,
 				6EAE7CFB238455BD00528D8F /* CloudAccount+CoreDataClass.swift */,
 				6EAE7CFC238455BD00528D8F /* CloudAccount+CoreDataProperties.swift */,
 				6E79109B232BCF7F00A60CE2 /* FinanceTracker */,
@@ -296,10 +302,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EAE7D022384590200528D8F /* CloudCurrency+CoreDataProperties.swift in Sources */,
 				6EAE7CFD238455BD00528D8F /* CloudAccount+CoreDataClass.swift in Sources */,
 				6E75C602232FF57F00AC2A64 /* Store.swift in Sources */,
 				6E7910D0232BD1D500A60CE2 /* MenuView.swift in Sources */,
 				6E7910A2232BCF7F00A60CE2 /* FinanceTracker.xcdatamodeld in Sources */,
+				6EAE7D012384590200528D8F /* CloudCurrency+CoreDataClass.swift in Sources */,
 				6ED1F9A8232BF36200412DB3 /* AccountsView.swift in Sources */,
 				6E79109D232BCF7F00A60CE2 /* AppDelegate.swift in Sources */,
 				6E79109F232BCF7F00A60CE2 /* SceneDelegate.swift in Sources */,

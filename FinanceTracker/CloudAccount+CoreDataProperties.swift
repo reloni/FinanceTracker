@@ -12,6 +12,7 @@ import CoreData
 
 
 extension CloudAccount {
+
     @nonobjc public class func fetchRequest() -> NSFetchRequest<CloudAccount> {
         return NSFetchRequest<CloudAccount>(entityName: "CloudAccount")
     }
@@ -19,5 +20,6 @@ extension CloudAccount {
     @NSManaged public var initialAmount: Int64
     @NSManaged public var title: String
     @NSManaged public var uuid: UUID
+    @NSManaged public var currency: CloudCurrency?
 
 }

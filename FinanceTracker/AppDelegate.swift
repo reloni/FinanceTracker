@@ -14,6 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        let context = persistentContainer.viewContext
+        let currency = CloudCurrency(context: context)
+        currency.code = "USD"
+        try! context.save()
+        
         return true
     }
 
@@ -62,7 +68,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         container.viewContext.undoManager = nil
         container.viewContext.shouldDeleteInaccessibleFaults = true
         container.viewContext.automaticallyMergesChangesFromParent = true
-
         
         return container
     }()

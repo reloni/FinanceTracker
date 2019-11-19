@@ -82,6 +82,7 @@ struct AccountsView: View {
                         VStack(alignment: .leading) {
                             Text(account.title)
                             Text("\(account.initialAmount)")
+                            Text("\(account.currency?.code ?? "")")
                         }
                     }
                 }
@@ -106,6 +107,14 @@ struct AccountsView: View {
         }
         .navigationBarItems(trailing: Button(action: { self.isPushed.toggle() }) { Image(systemName: "plus").font(Font.title.weight(.semibold)) })
         .navigationBarTitle("Accounts", displayMode: .inline)
+    }
+    
+    func idToString(_ value: NSManagedObjectID?) -> String {
+        if let v = value {
+            return "\(v)"
+        } else {
+            return ""
+        }
     }
 }
 
@@ -157,6 +166,7 @@ struct AccountView: View {
             } else {
                 let c = CloudAccount(entity: CloudAccount.entity(), insertInto: background)
                 c.uuid = UUID()
+                c.currency = try! background.fetch(CloudCurrency.fetchRequest()).first as? CloudCurrency
                 return c
             }
         }()
