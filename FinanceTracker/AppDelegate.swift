@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -20,8 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         currency.code = "USD"
         try! context.save()
         
-//        let test = TestClass().set(\.a, "ololo")
-//        dump(test)
+        let test = TestClass()
+            .fluent
+            .set(\.a, "value a")
+            .set(\.b, "value b")
+        dump(test)
         
         return true
     }

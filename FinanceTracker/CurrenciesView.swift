@@ -9,21 +9,28 @@
 import Foundation
 import SwiftUI
 
-protocol FluentApi: class {
-    func set<T>(_ kp: WritableKeyPath<Self, T>, _ value: @autoclosure () -> T) -> Self
-}
-
-extension FluentApi {
-    func set<T>(_ kp: WritableKeyPath<Self, T>, _ value: @autoclosure () -> T) -> Self {
-        var copy = self
+final class FluentApi<Object> {
+    let object: Object
+    
+    init(_ object: Object) {
+        self.object = object
+    }
+    
+    func set<T>(_ kp: WritableKeyPath<Object, T>, _ value: @autoclosure () -> T) -> FluentApi<Object> {
+        var copy = object
         copy[keyPath: kp] = value()
-        return copy
+        return FluentApi(copy)
     }
 }
 
-//class TestClass: FluentApi {
-//    var a = ""
-//}
+extension TestClass {
+    var fluent: FluentApi<TestClass> { .init(self) }
+}
+
+class TestClass {
+    var a = ""
+    var b = ""
+}
 
 //extension CloudCurrency: FluentApi { }
 
