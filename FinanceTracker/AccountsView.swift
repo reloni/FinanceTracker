@@ -147,14 +147,14 @@ struct AccountView: View {
 //                }
 //            }
         }
-        .navigationBarItems(leading: Button(action: { self.dismiss() }) { Image(systemName: "chevron.left").font(Font.title) },
+        .navigationBarItems(//leading: Button(action: { self.dismiss() }) { Image(systemName: "chevron.left").font(Font.title) },
                             trailing: Button(action: { self.save() }) { Text("Save") })
         .navigationBarTitle("Account", displayMode: .inline)
     }
     
-    func dismiss() {
-        presentationMode.wrappedValue.dismiss()
-    }
+//    func dismiss() {
+//        presentationMode.wrappedValue.dismiss()
+//    }
     
     func save() {
         presentationMode.wrappedValue.dismiss()
