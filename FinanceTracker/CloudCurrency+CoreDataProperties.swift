@@ -10,11 +10,11 @@
 import Foundation
 import CoreData
 
-
 extension CloudCurrency {
-
     @nonobjc public class func fetchRequest() -> NSFetchRequest<CloudCurrency> {
-        return NSFetchRequest<CloudCurrency>(entityName: "CloudCurrency")
+        let request = NSFetchRequest<CloudCurrency>(entityName: "CloudCurrency")
+        request.sortDescriptors = [NSSortDescriptor(key: "code", ascending: true)]
+        return request
     }
 
     @NSManaged public var code: String

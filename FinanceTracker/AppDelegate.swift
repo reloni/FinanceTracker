@@ -20,6 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         currency.code = "USD"
         try! context.save()
         
+//        let test = TestClass().set(\.a, "ololo")
+//        dump(test)
+        
         return true
     }
 

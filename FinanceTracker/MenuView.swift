@@ -68,7 +68,7 @@ struct MenuView: View {
         GroupItem(header: "First",
                   items: [
                     .init("Accounts", AccountsView()),
-                    .init("2", OtherView(account: Account(id: UUID(), title: "Account title", initialAmount: 1, currency: .eur))),
+                    .init("Currencies", CurrenciesView()),
                     .init("3", AccountView(Account(id: UUID(), title: "Acc title", initialAmount: 12312124, currency: .usd)))
                     ],
                   isExpanded: true),
